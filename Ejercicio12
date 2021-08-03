@@ -1,0 +1,163 @@
+using System;
+using System.Collections; 
+
+namespace ejercicio12Bis
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Hello World!");
+
+            string msj = "HOLA MUNDO";
+            Queue myQ = new Queue();
+            char [] tablaDeLetras = new char[]{'A', 'B', 'C', 'D', 'E','F','G','H','I','J','K','L','M','N','Ñ',
+            'O','P','Q','R','S','T','U','V','W','X','Y','Z', ' '}; 
+
+            char[] arreglo = msj.ToCharArray();
+
+            myQ = guardarClave(); 
+
+
+            int[] cod_sin_cifrar = codigoSinCifrar(arreglo,  tablaDeLetras); 
+
+            foreach (int aux in cod_sin_cifrar){
+                Console.Write (aux + " | "); 
+            }
+            Console.WriteLine(); 
+
+            int[] codCifrado = codigoCifrado(myQ, cod_sin_cifrar); 
+             foreach (int aux in codCifrado){
+                Console.Write (aux + " | "); 
+            }
+            Console.WriteLine(); 
+
+            char [] msj_cifrado = mensajeCifrado(codCifrado, tablaDeLetras);
+             foreach (char aux in msj_cifrado){
+                Console.Write (aux + " | "); 
+            } 
+            
+            Console.WriteLine();
+            Console.WriteLine("Repetir clave para descifrar: ");
+            
+            myQ = guardarClave(); 
+            Console.WriteLine();
+            int[] codDescifrado = codigoDesCifrado(myQ, codCifrado); 
+            foreach(int aux in codDescifrado){
+                Console.Write(aux +" | "); 
+            }
+            Console.WriteLine(); 
+            Console.WriteLine();
+            msj_cifrado = mensajeCifrado(codDescifrado, tablaDeLetras);
+             foreach (char aux in msj_cifrado){
+                Console.Write (aux + " | "); 
+            } 
+            Console.WriteLine();
+            
+
+            Console.ReadLine(); 
+
+
+/////////////////////Definicion de metodos//////////////////////////////////////////////////////////////////
+
+        static Queue guardarClave(){
+            Queue q = new Queue(); 
+            Console.WriteLine("Ingrese clave: .- ");
+             Console.WriteLine ("Para finalizar, ingrese el valor 0.- "); 
+       
+            int unNumero = int.Parse(Console.ReadLine()) ;
+            while (unNumero != 0) {
+                q.Enqueue(unNumero); 
+                Console.WriteLine("Ingrese clave: .- "); 
+                unNumero = int.Parse(Console.ReadLine()) ;
+            }
+            Console.WriteLine("La clave se guardo correctamente.- "); 
+            return q; 
+        }
+
+         static int BuscarCodigoLetra (char unChar, char[] abc ) {
+            int i = 0; 
+            //if (unChar == 'Ñ') {return 15; }
+	        //if (unChar == ' ') {return 28; }
+	
+            while ((i <abc.Length)&&(abc[i] != unChar)  ){
+                    i++; 
+                    }
+            
+             i++; //codigo de letra es la posicion mas uno.}
+               
+            return i; 
+           
+        }
+        static int[] codigoSinCifrar (char[] msj_original, char[] abc){
+            int[] arreglo = new int[msj_original.Length];
+
+            for (int i = 0; i < msj_original.Length; i++){
+                arreglo[i]= BuscarCodigoLetra(msj_original[i], abc);
+            }
+            return arreglo;  
+
+        }
+        static int [] codigoCifrado(Queue q, int[] codSinCifrar){
+            int[] codigo = new int[codSinCifrar.Length]; 
+            int suma = 0; 
+            int aux; 
+            for (int i= 0; i< codigo.Length; i++){
+                aux =(int)q.Dequeue();  
+                suma = codSinCifrar[i]+ aux;  
+                if (suma < 28){
+                    codigo[i]= suma;
+                    }
+                else {
+                    codigo[i] = suma - 28; 
+                    }
+                
+                q.Enqueue(aux);  
+            } 
+            return codigo; 
+
+         }
+        static char buscarLetraPorCodigo (int codigo, char[] abc){
+                if ((codigo >= 0) && (codigo < abc.Length)){
+                    return abc[codigo-1]; }
+                else {
+                    return ' '; 
+                }
+        }
+        static char[] mensajeCifrado (int[] codCifrado, char[]abc){
+            char[] mensaje = new char[codCifrado.Length];
+            for (int i = 0; i < codCifrado.Length; i++){
+                mensaje[i] = buscarLetraPorCodigo(codCifrado[i], abc); 
+            } 
+            return mensaje; 
+        }
+
+        static int [] codigoDesCifrado(Queue q, int[] cod_cifrado){
+            int[] codigo = new int[cod_cifrado.Length]; 
+            int resta = 0; 
+            int aux; 
+            for (int i= 0; i< codigo.Length; i++){
+                aux =(int)q.Dequeue();  
+                resta = cod_cifrado[i] - aux;  
+                if (resta > 0){
+                    codigo[i]= resta;
+                    }
+                else {
+                    codigo[i] = resta + 28; 
+                    }
+                
+                q.Enqueue(aux);  
+            } 
+            return codigo; 
+
+         }
+ 
+
+
+
+
+
+
+        }// fin del main 
+    }
+}
