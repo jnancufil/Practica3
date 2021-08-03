@@ -1,0 +1,145 @@
+using System;
+/**Implementar los siguientes métodos estáticos que devuelvan la suma, resta y multiplicación de
+matrices pasadas como parámetros. Para el caso de la suma y la resta, las matrices deben ser del
+mismo tamaño, en caso de no serlo devolver null. Para el caso de la multiplicación la cantidad
+de columnas de A debe ser igual a la cantidad de filas de B, en caso contrario generar una
+excepción ArgumentException con un mensaje explicativo.
+static double[,] Suma(double[,] A, double[,] B)
+static double[,] Resta(double[,] A, double[,] B)
+static double[,] Multiplicacion(double[,] A, double[,] B)**/
+
+namespace ejercicio6
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double[,] A = generadorDeMatrices(4,4);
+            double [,] B = generadorDeMatrices (4,4);  
+            double[,] C = generadorDeMatrices(3,5); 
+            Console.WriteLine("Hello World!");
+          
+            try {
+                double[,] sumaMatrices = Suma(A,B); 
+                Console.WriteLine("Suma Matrices: ");
+                ImprimirMatriz(sumaMatrices);
+                Console.WriteLine();
+
+                 double[,] restaMatrices = Resta(A, C); 
+                Console.WriteLine("Resta Matrices: ");
+                ImprimirMatriz(restaMatrices); 
+                Console.WriteLine();
+                }
+            catch (NullReferenceException e ){
+                Console.WriteLine("{0}:{1}", e.GetType().Name, e.Message);
+            }
+            Console.WriteLine();
+            Console.WriteLine("Multiplicacion de matrices: ");
+            Console.WriteLine();
+            try{
+                double[,] matrizProducto = Multiplicacion(A,C); 
+                ImprimirMatriz(matrizProducto); 
+            }
+            catch (ArgumentException e){
+                 Console.WriteLine("{0}:{1}", e.GetType().Name, e.Message);
+            }
+
+
+            Console.ReadLine();
+
+
+
+        static double[,] generadorDeMatrices(int a, int b){
+                 double[,] mat = new double[a, b];
+                for (int i = 0; i <= ((a*b)-1); i++)
+                     {
+                     mat[i / b, i % b] = i;
+                 }
+                return mat;
+                    }
+        static void ImprimirMatriz(double[,] matriz)
+            {
+                for (int i = 0; i < matriz.GetLength(0); i++)
+                    {
+                    for (int j = 0; j < matriz.GetLength(1); j++)
+                            {
+                        Console.Write($"{matriz[i, j].ToString("0.0"),-7}");
+                     }
+                Console.WriteLine();
+            }
+}
+        static double[,] Suma (double [,] A, double[,] B ){
+            double[,] suma = new double [A.GetLength(0), A.GetLength(1)]; 
+            if ((A.GetLength(0)==B.GetLength(0))&&(A.GetLength(1)==B.GetLength(1))){
+                    for (int i=0; i< A.GetLength(0); i++){
+                        for (int j= 0; j< A.GetLength(1); j++){
+                            suma[i,j] = A[i,j] + B [i,j];
+                        }
+                    }
+            }
+            else throw new NullReferenceException("No se puede realizar la Suma porque las matrices no son del mismo tamaño."); 
+            Console.WriteLine("Fin del metodo suma.- ");  
+            return suma; 
+        }
+        static double[,] Resta (double [,] A, double[,] B ){
+            double[,] resta = new double [A.GetLength(0), A.GetLength(1)]; 
+            if ((A.GetLength(0)==B.GetLength(0))&&(A.GetLength(1)==B.GetLength(1))){
+                    for (int i=0; i< A.GetLength(0); i++){
+                        for (int j= 0; j< A.GetLength(1); j++){
+                            resta[i,j] = A[i,j] - B [i,j];
+                        }
+                    }
+            }
+            else throw new NullReferenceException("No se puede realizar la Resta porque las matrices no son del mismo tamaño."); 
+            Console.WriteLine("Fin del metodo resta.- ");
+            return resta; 
+        }
+        static double[] devolverFilaI (double[,] matriz, int numFila){
+	        double[] filaI = new double [matriz.GetLength(1)]; 
+	        for (int j = 0; j < filaI.Length; j++){
+		        filaI[j] = matriz[numFila, j]; 	
+	        }
+	        return filaI; 
+        }
+        static double [] devolverColumnaJ (double[,] matriz, int numColumna){
+	        double[] columnaJ = new double[matriz.GetLength(0)];
+ 	        for (int i = 0; i < columnaJ.Length; i++){
+		        columnaJ[i] = matriz[i, numColumna]; 
+	        }
+	        return columnaJ; 
+        }  
+        /**Para el siguiente metodo, Debido a que los vectores de fila y columna son del mismo tamaño
+(condicion necesaria para realizar el producto entre matrices), solo utilizo un for
+para realizar el producto entre filas y columnas de dos matrices.**/
+ 
+        static double multiplicacionArreglos (double[] X, double[] Y){
+	        double producto =0; 
+	        for (int i = 0; i< X.Length; i++){
+		        producto += X[i]*Y[i]; 
+	        }
+	        return producto; 
+        }
+
+
+        static double[,] Multiplicacion (double [,] A, double[,] B ){
+            double[,] producto  = new double [A.GetLength(0), B.GetLength(1)]; 
+            double[] filaA; 
+            double[] columnaB; 
+
+            if (A.GetLength(1)==B.GetLength(0)){
+                    for (int i=0; i< A.GetLength(0); i++){
+                        filaA = devolverFilaI (A, i); 
+                        for (int j= 0; j< A.GetLength(1); j++){
+                            columnaB = devolverColumnaJ(B, j); 
+                            producto[i,j] = multiplicacionArreglos(filaA, columnaB); 
+                        }
+                    }
+            }
+            else throw new ArgumentException (String.Format ("No coinciden el numero de columnas de la primera matriz con el numero de columnas de la segunda matriz"));
+            return producto; 
+        }
+
+
+        }
+    }
+}
