@@ -1,0 +1,29 @@
+using System;
+
+namespace ejercicio1
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            Console.CursorVisible = false; 
+            ConsoleKeyInfo k = Console.ReadKey (true);
+            while (k.Key != ConsoleKey.End){
+                //ConsoleKey.End tecla de movimiento del cursor
+               // Console.BackgroundColor = ConsoleColor.Gray;  ( otra funcion de Console)
+               // Console.ForegroundColor = ConsoleColor.DarkBlue; (otra funcion de Console)
+                Console.Clear(); //borra la pantalla.
+                Console.Write ($"{k.Modifiers}- {k.Key}-{k.KeyChar}"); 
+                // k.Modifiers permite comprobar si se han pulsado simultáneamente teclas modificadoras:
+                // Alt, Shift o Control (muestra el estado de dichas teclas).
+                // k.Key se refiere a la tecla porque hay teclas que no tienen un carácter visualizable
+                //k.KeyChar representa el carácter que se escribiría al pulsar esa tecla
+                k= Console.ReadKey(true);/**lee una tecla desde teclado. El parámetro "interceptar" es un "bool",
+                 y es opcional. Indica si se debe capturar la tecla sin permitir que se vea en pantalla 
+                 ("true" para que no se vea, "false" para que se pueda ver). Si no se indica este parámetro,
+                  la tecla se muestra en pantalla.
+                **/
+            }
+        }
+    }
+}
