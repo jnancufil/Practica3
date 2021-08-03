@@ -1,0 +1,40 @@
+using System;
+
+namespace ejercicio3
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            double[,] matriz = new double[,]
+                    { {1.0,2.0,3.0,4.0},
+                    {5.0,6.0,7.0,8.0},
+                    {9.0,10.0,11.0,12.0} };
+            Console.WriteLine("Hello World!");
+            Console.WriteLine("Matriz con formato: ");
+            Console.WriteLine();
+
+            ImprimirMatriz(matriz, "0.0"); 
+            Console.ReadLine(); 
+
+ /**3. Idem al anterior pero ahora con un parámetro más que representa la plantilla de formato que
+debe aplicarse a los números al imprimirse. La plantilla de formato es un string de acuerdo a las
+convenciones de formato compuesto, por ejemplo “0.0” implica escribir los valores reales con
+un dígito para la parte decimal. Observar que no hay inconveniente para implementar dos
+métodos con el mismo nombre siempre que NO lleven la misma cantidad de parámetros con los
+mismos tipos y en el mismo orden (sobrecarga de métodos).
+static void ImprimirMatriz(double[,] matriz, string formatString)**/
+
+            static void ImprimirMatriz (double[,] matriz, string formatString){
+                
+                for (int i = 0; i < matriz.GetLength(0); i++){
+                   for(int j= 0; j < matriz.GetLength(1);j++){
+                       Console.Write(matriz[i,j].ToString(formatString)+" | "); 
+                   }
+                   Console.WriteLine(); 
+               }
+            
+        }
+        }
+    }
+}
